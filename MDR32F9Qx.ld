@@ -1,11 +1,10 @@
 /* Linker script to configure memory regions */
 MEMORY
 {
-	FLASH (rx) : ORIGIN = 0x08000000, LENGTH = 116K
-	FLASH_28 (rx) : ORIGIN = 0x0801C000, LENGTH = 4K
-	FLASH_29 (rx) : ORIGIN = 0x0801D000, LENGTH = 4K
-	FLASH_30 (rx) : ORIGIN = 0x0801E000, LENGTH = 8K
-	FLASH_31 (rx) : ORIGIN = 0x0801F000, LENGTH = 4K
+	FLASH (rx) : ORIGIN = 0x08000000, LENGTH = 104K			/* Общий объем 128К */
+	FLASH_26 (rx) : ORIGIN = 0x0801A000, LENGTH = 8K		/** Прикладная задача (2 страницы) */
+	FLASH_28 (rx) : ORIGIN = 0x0801C000, LENGTH = 4K		/** Параметры прикладной задачи */
+	FLASH_29 (rx) : ORIGIN = 0x0801D000, LENGTH = 4K		/** Параметры устройства */
 	RAM (rwx)  : ORIGIN = 0x20000000, LENGTH = 32K
 }
 
@@ -13,13 +12,6 @@ ENTRY(Reset_Handler)
 
 SECTIONS
 {
-	 	.eventLogList (NOLOAD) :
- 	{
- 		. = ALIGN(4);
- 		*(.eventLogList)                 
- 		*(.eventLogList*)                    
- 		. = ALIGN(4);
- 	} > FLASH_31
 
 	.systemParameters (NOLOAD) :
 	{
@@ -27,7 +19,7 @@ SECTIONS
 		*(.systemParameters)           /* .plc sections (code) */
 		*(.systemParameters*)          /* .plc* sections (code) */
 		. = ALIGN(4);
-	} >FLASH_30
+	} >FLASH_29
 	
 	.applicationParameters (NOLOAD) :
 	{
@@ -35,7 +27,7 @@ SECTIONS
 		*(.applicationParameters)           /* .plc sections (code) */
 		*(.applicationParameters*)          /* .plc* sections (code) */
 		. = ALIGN(4);
-	} >FLASH_29
+	} >FLASH_28
 
 	.applicationData (NOLOAD) :
 	{
@@ -43,7 +35,7 @@ SECTIONS
 		*(.applicationData)           /* .plc sections (code) */
 		*(.applicationData*)          /* .plc* sections (code) */
 		. = ALIGN(4);
-	} >FLASH_28
+	} >FLASH_26
 	
 	.text :
 	{
